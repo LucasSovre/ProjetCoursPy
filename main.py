@@ -12,7 +12,7 @@ mainUI.config(menu=menuBar) #on defini le menu
 subMenuFile = Menu(menuBar) #on défini le sous menu 
 subMenuHelp = Menu(menuBar)
 menuBar.add_cascade(label='Fichier', menu=subMenuFile)
-subMenuFile.add_command(label='Importer', command=select_files)
+subMenuFile.add_command(label='Importer', command=lambda : (importImage("cache/"+select_files())))
 subMenuFile.add_command(label='Exporter')
 menuBar.add_cascade(label='Aide', menu=subMenuHelp)
 
@@ -31,12 +31,17 @@ visualization.grid(rowspan=2,row=0,column=1,sticky="nsew")
 controlPanel = Frame(mainUI, background="yellow")#configuration du Frame controlPanel
 controlPanel.grid(rowspan=2,row=0,column=2,sticky="nsew")
 
-image = PhotoImage(file="imagetest.png")
-pic = Image.open("imagetest.png")
-X,Y = pic.size
+def importImage(filename):
+    global display
+    global image
+    image = PhotoImage(file=filename)
+    pic = Image.open(filename)
+    X,Y = pic.size
+    display.config(width=X,height=Y)
+    display.create_image(X/2,Y/2,image=image)
+    display.update()
 
-display = Canvas(visualization,width=X, height=Y)
+display = Canvas(visualization,width=1, height=1)
 display.pack()
-display.create_image(X/2,Y/2,image=image)
 
 mainUI.mainloop() #on lance l'attente de commande et de L'UI
