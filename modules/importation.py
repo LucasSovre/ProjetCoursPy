@@ -18,5 +18,5 @@ def select_files():
     tupleFile = strFilenames.split("/")
     fileLenght = len(tupleFile)
     file = tupleFile[fileLenght-1]
-    print(file)
+    return(file)
     
