@@ -1,4 +1,6 @@
 from tkinter import *
+from PIL import *
+from modules.Import import *
 
 mainUI = Tk() #on instentie la fenetre principale du programme
 mainUI.title('main') #renomme la fenetre principale
@@ -10,7 +12,7 @@ mainUI.config(menu=menuBar) #on defini le menu
 subMenuFile = Menu(menuBar) #on défini le sous menu 
 subMenuHelp = Menu(menuBar)
 menuBar.add_cascade(label='Fichier', menu=subMenuFile)
-subMenuFile.add_command(label='Importer')
+subMenuFile.add_command(label='Importer', command=select_files)
 subMenuFile.add_command(label='Exporter')
 menuBar.add_cascade(label='Aide', menu=subMenuHelp)
 
@@ -26,7 +28,13 @@ toolbar.grid(rowspan=2,row=0,column=0,sticky="nsew")
 visualization = Frame(mainUI, background="blue") #configuration du frame de canvas principal
 visualization.grid(rowspan=2,row=0,column=1,sticky="nsew")
 
-controlPanel = Frame(mainUI, background="yellow")
+controlPanel = Frame(mainUI, background="yellow")#configuration du Frame controlPanel
 controlPanel.grid(rowspan=2,row=0,column=2,sticky="nsew")
+
+class image : 
+    def __init__(self,img,x,y):
+        self.img = img
+        self.x,self.y = img.size
+
 
 mainUI.mainloop() #on lance l'attente de commande et de L'UI

@@ -1,5 +1,18 @@
-from tkinter import *
-from PIL import Image
+from tkinter import filedialog as fd
+from tkinter.messagebox import showinfo
 
-def importImage() :
-    img = PhotoImage(file='')
+def select_files():
+    filetypes = (
+        ('text files', '*.png'),
+        ('All files', '*.*')
+    )
+
+    filenames = fd.askopenfilenames(
+        title='Open files',
+        initialdir='/',
+        filetypes=filetypes)
+
+    showinfo(
+        title='Selected Files',
+        message=filenames
+    )
