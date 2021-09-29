@@ -34,12 +34,12 @@ controlPanel.grid(rowspan=2,row=0,column=2,sticky="nsew")
 def importImage(filename):
     global display
     global image
-    image = PhotoImage(file=filename)
-    pic = Image.open(filename)
+    image = PhotoImage(file=filename)  #on declare une image avec le path en argument
+    pic = Image.open(filename) #get des dimensions de notre image
     X,Y = pic.size
-    display.config(width=X,height=Y)
-    display.create_image(X/2,Y/2,image=image)
-    display.update()
+    display.config(width=X,height=Y) #on redefinis les dimensions du canvas
+    display.create_image(X/2,Y/2,image=image) #on affiche notre image sur le canvas
+    display.update() #on update le canvas
 
 display = Canvas(visualization,width=1, height=1)
 display.pack()
