@@ -1,5 +1,4 @@
 from tkinter import filedialog as fd
-from tkinter.messagebox import showinfo
 import shutil
 
 def select_files():
@@ -13,10 +12,7 @@ def select_files():
         initialdir='/',
         filetypes=filetypes)
 
-    showinfo(
-        title='Selected Files',
-        message=filenames
-    )
+
     strFilenames = str(filenames).replace('(','').replace(')','').replace(',','').replace("'",'')
     shutil.copy(strFilenames,'cache/')
     tupleFile = strFilenames.split("/")

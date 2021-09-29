@@ -1,10 +1,10 @@
 from tkinter import *
-from PIL import *
-from modules.Import import *
+from PIL import Image
+from modules.importation import *
 
 mainUI = Tk() #on instentie la fenetre principale du programme
 mainUI.title('main') #renomme la fenetre principale
-mainUI.geometry("1080x720")
+mainUI.geometry("1500x800")
 
 
 menuBar = Menu(mainUI) #création du menu principal
@@ -31,10 +31,12 @@ visualization.grid(rowspan=2,row=0,column=1,sticky="nsew")
 controlPanel = Frame(mainUI, background="yellow")#configuration du Frame controlPanel
 controlPanel.grid(rowspan=2,row=0,column=2,sticky="nsew")
 
-class image : 
-    def __init__(self,img,x,y):
-        self.img = img
-        self.x,self.y = img.size
+image = PhotoImage(file="imagetest.png")
+pic = Image.open("imagetest.png")
+X,Y = pic.size
 
+display = Canvas(visualization,width=X, height=Y)
+display.pack()
+display.create_image(X/2,Y/2,image=image)
 
 mainUI.mainloop() #on lance l'attente de commande et de L'UI
