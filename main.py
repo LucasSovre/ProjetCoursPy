@@ -38,10 +38,25 @@ button1.pack()
 
 contrast = Frame(toolbar) #crée un frame pour l'input en question
 contrast.pack()
-button3 = Button(contrast, text='contrast',command=lambda : (display.contrast()))
+button2 = Button(contrast, text='contrast',command=lambda : (display.contrast()))
+button2.pack()
+entryContrast = Entry(contrast)
+entryContrast.pack()
+
+sharpness = Frame(toolbar) #crée un frame pour l'input en question
+sharpness.pack()
+button3 = Button(sharpness, text='duretée',command=lambda : (display.sharpness()))
 button3.pack()
-box3 = Entry(contrast)
-box3.pack()
+entrySharpness = Entry(sharpness)
+entrySharpness.pack()
+
+saturation = Frame(toolbar) #crée un frame pour l'input en question
+saturation.pack()
+button4 = Button(saturation, text='saturation',command=lambda : (display.saturation()))
+button4.pack()
+entrySaturation = Entry(saturation)
+entrySaturation.pack()
+
 
 visualization = Frame(mainUI, background="blue") #configuration du frame de canvas principal
 visualization.grid(rowspan=2,row=0,column=1,sticky="nsew")
@@ -79,8 +94,19 @@ class Displayed :
 
     def contrast(self):
         global index
-        contrastFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(box3.get()))) #on viens directement chercher la valeur de l'entrée ici
+        contrastFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entryContrast.get()))) #on viens directement chercher la valeur de l'entrée ici
         self.initImg('./cache/' + str(index)+'.png')
+
+    def sharpness(self):
+        global index
+        sharpnessFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entrySharpness.get()))) #on viens directement chercher la valeur de l'entrée ici
+        self.initImg('./cache/' + str(index)+'.png')
+
+    def saturation(self):
+        global index
+        saturationFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entrySaturation.get()))) #on viens directement chercher la valeur de l'entrée ici
+        self.initImg('./cache/' + str(index)+'.png')
+        
 
 display = Displayed(visualization)
 
