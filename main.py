@@ -7,12 +7,14 @@ mainUI = Tk() #on instentie la fenetre principale du programme
 mainUI.title('main') #renomme la fenetre principale
 mainUI.geometry("1500x800")
 
+index = 0
+
 menuBar = Menu(mainUI) #création du menu principal
 mainUI.config(menu=menuBar) #on defini le menu
 subMenuFile = Menu(menuBar) #on défini le sous menu 
 subMenuHelp = Menu(menuBar)
 menuBar.add_cascade(label='Fichier', menu=subMenuFile)
-subMenuFile.add_command(label='Importer', command=lambda : (display.initImg(select_files())))
+subMenuFile.add_command(label='Importer', command=lambda : (display.initImg(select_files(str(index)))))
 subMenuFile.add_command(label='Exporter')
 menuBar.add_cascade(label='Aide', menu=subMenuHelp)
 
@@ -24,6 +26,8 @@ mainUI.rowconfigure(1 , weight="1")
 
 toolbar = Frame(mainUI, background="green") #configuration de la barre d'outils
 toolbar.grid(rowspan=2,row=0,column=0,sticky="nsew")
+button1 = Button(toolbar, text="black & white", command=lambda : (display.black_and_white()))
+button1.pack()
 
 visualization = Frame(mainUI, background="blue") #configuration du frame de canvas principal
 visualization.grid(rowspan=2,row=0,column=1,sticky="nsew")
@@ -38,6 +42,7 @@ class Displayed :
         self.canvas.pack()
 
     def initImg(self,filename):
+        global index
         self.filename = filename
         self.image = PhotoImage(file=filename)
         pic = Image.open(filename)
@@ -45,6 +50,12 @@ class Displayed :
         self.canvas.config(width=X,height=Y)
         self.canvas.create_image(X/2,Y/2,image=self.image) #on affiche notre image sur le canvas
         self.canvas.update() #on update le canvas
+        index = index + 1
+    
+    def black_and_white(self):
+        global index
+        black_and_white(self.filename,'./cache/' + str(index) +'.png')
+        self.initImg('./cache/' + str(index)+'.png')
 
 display = Displayed(visualization)
 

@@ -1,7 +1,8 @@
 from tkinter import filedialog as fd
 import shutil
+import os
 
-def select_files():
+def select_files(outputName):
     filetypes = (
         ('text files', '*.png'),
         ('All files', '*.*')
@@ -18,5 +19,6 @@ def select_files():
     tupleFile = strFilenames.split("/") #Liste du chemin du fichier séparer par les /
     fileLenght = len(tupleFile) #Taille de la lsite
     file = tupleFile[fileLenght-1] #On récupère le dernier élément de la liste qui est le nom du fichier
-    return(file) #On retourne le nom du fichier
+    os.rename(r'cache/'+file,r'cache/'+outputName+'.png')
+    return('cache/'+outputName+'.png')
     
