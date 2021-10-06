@@ -15,7 +15,7 @@ def sharpness(input_image_path,output_image_path,level):
     filter = ImageEnhance.Sharpness(img)
     filter.enhance(level).save(output_image_path)
 
-def contrast(input_image_path,output_image_path,level):
+def contrastFunction(input_image_path,output_image_path,level):
     img = Image.open(input_image_path)
     filter = ImageEnhance.Contrast(img)
     filter.enhance(level).save(output_image_path)

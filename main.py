@@ -29,6 +29,14 @@ toolbar.grid(rowspan=2,row=0,column=0,sticky="nsew")
 button1 = Button(toolbar, text="black & white", command=lambda : (display.black_and_white()))
 button1.pack()
 
+
+contrast = Frame(toolbar)
+contrast.pack()
+button3 = Button(contrast, text='contrast',command=lambda : (display.contrast()))
+button3.pack()
+box3 = Entry(contrast)
+box3.pack()
+
 visualization = Frame(mainUI, background="blue") #configuration du frame de canvas principal
 visualization.grid(rowspan=2,row=0,column=1,sticky="nsew")
 
@@ -55,6 +63,11 @@ class Displayed :
     def black_and_white(self):
         global index
         black_and_white(self.filename,'./cache/' + str(index) +'.png')
+        self.initImg('./cache/' + str(index)+'.png')
+
+    def contrast(self):
+        global index
+        contrastFunction(self.filename,'./cache/' + str(index) +'.png',int(box3.get()))
         self.initImg('./cache/' + str(index)+'.png')
 
 display = Displayed(visualization)
