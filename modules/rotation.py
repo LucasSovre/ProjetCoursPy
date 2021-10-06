@@ -1,6 +1,6 @@
 from tkinter import *
 
-def rotate(display, lien, degree):
-    img = Image.open(display)
+def rotate(input_image_path, output_image_path, degree):
+    img = Image.open(input_image_path)
     filter = img.rotate(degree)
-    filter.save(lien)
+    filter.save(output_image_path)

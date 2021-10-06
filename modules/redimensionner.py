@@ -1,6 +1,6 @@
 from tkinter import *
 
-def newSize(display, lien, lenght, width):
-    img = Image.open(display)
+def newSize(input_image_path, output_image_path, lenght, width):
+    img = Image.open(input_image_path)
     filter = img.geometry("'" + lenght.get() + "x" + width.get() + "'")
-    filter.save(lien)
+    filter.save(output_image_path)
