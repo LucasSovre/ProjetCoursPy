@@ -5,6 +5,8 @@ import glob
 from PIL import Image
 from modules.importation import *
 from modules.b_and_w import *
+from modules.redimensionner import sizeFunction
+from modules.rotation import *
 
 mainUI = Tk() #on instentie la fenetre principale du programme
 mainUI.title('main') #renomme la fenetre principale
@@ -57,6 +59,21 @@ button4.pack()
 entrySaturation = Entry(saturation)
 entrySaturation.pack()
 
+redimensionner = Frame(toolbar) #crée un frame pour l'input en question
+redimensionner.pack()
+button5 = Button(redimensionner, text='redimmensionner',command=lambda : (display.redimension()))
+button5.pack()
+entryRedimensionX = Entry(redimensionner)
+entryRedimensionX.pack()
+entryRedimensionY = Entry(redimensionner)
+entryRedimensionY.pack()
+
+rotation = Frame(toolbar) #crée un frame pour l'input en question
+rotation.pack()
+button6 = Button(rotation, text='Rotation',command=lambda : (display.rotation()))
+button6.pack()
+entryRotation = Entry(rotation)
+entryRotation.pack()
 
 visualization = Frame(mainUI, background="blue") #configuration du frame de canvas principal
 visualization.grid(rowspan=2,row=0,column=1,sticky="nsew")
@@ -105,6 +122,16 @@ class Displayed :
     def saturation(self):
         global index
         saturationFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entrySaturation.get()))) #on viens directement chercher la valeur de l'entrée ici
+        self.initImg('./cache/' + str(index)+'.png')
+
+    def redimension(self):
+        global index
+        sizeFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entryRedimensionX.get())),int(verifyNumber(entryRedimensionY.get()))) #on viens directement chercher la valeur de l'entrée ici
+        self.initImg('./cache/' + str(index)+'.png')
+
+    def rotation(self):
+        global index
+        rotate(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entryRotation.get()))) #on viens directement chercher la valeur de l'entrée ici
         self.initImg('./cache/' + str(index)+'.png')
         
 
