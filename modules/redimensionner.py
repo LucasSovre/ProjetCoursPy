@@ -1,6 +1,7 @@
 from tkinter import *
+from PIL import Image
 
-def newSize(input_image_path, output_image_path, lenght, width):
+def sizeFunction(input_image_path, output_image_path,lenght, width):
     img = Image.open(input_image_path)
-    filter = img.geometry("'" + lenght.get() + "x" + width.get() + "'")
+    filter = img.resize((lenght,width),Image.ANTIALIAS)
     filter.save(output_image_path)
