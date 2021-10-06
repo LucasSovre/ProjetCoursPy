@@ -1,4 +1,6 @@
 from tkinter import *
 
-def rotate(display, degree):
-    return display.rotate(degree.get())
+def rotate(display, lien, degree):
+    img = Image.open(display)
+    filter = img.rotate(degree)
+    filter.save(lien)
