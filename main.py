@@ -1,6 +1,7 @@
 from tkinter import *
 from PIL import Image
 from modules.importation import *
+from modules.b_and_w import *
 
 mainUI = Tk() #on instentie la fenetre principale du programme
 mainUI.title('main') #renomme la fenetre principale
