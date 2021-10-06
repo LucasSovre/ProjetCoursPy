@@ -1,4 +1,6 @@
 from tkinter import *
+from os import remove
+import glob
 from PIL import Image
 from modules.importation import *
 from modules.b_and_w import *
@@ -8,6 +10,9 @@ mainUI.title('main') #renomme la fenetre principale
 mainUI.geometry("1500x800")
 
 index = 0
+files = glob.glob('./cache/*')
+for f in files :
+    os.remove(f)
 
 menuBar = Menu(mainUI) #création du menu principal
 mainUI.config(menu=menuBar) #on defini le menu
