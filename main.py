@@ -38,6 +38,13 @@ toolbar.grid(rowspan=2,row=0,column=0,sticky="nsew")
 button1 = Button(toolbar, text="black & white", command=lambda : (display.black_and_white()))
 button1.pack()
 
+nextAndPrev = Frame(toolbar)
+nextAndPrev.pack()
+buttonPrev = Button(nextAndPrev, text="<--", command=lambda :(display.previousImg()))
+buttonNext = Button(nextAndPrev, text="-->", command=lambda: (display.nexImg()))
+buttonPrev.pack()
+buttonNext.pack()
+
 contrast = Frame(toolbar) #crée un frame pour l'input en question
 contrast.pack()
 button2 = Button(contrast, text='contrast',command=lambda : (display.contrast()))
@@ -96,41 +103,66 @@ class Displayed :
     def initImg(self,filename):
         global index
         self.filename = filename
+        print(filename)
         self.image = PhotoImage(file=filename)
         pic = Image.open(filename)
         X,Y = pic.size
         self.canvas.config(width=X,height=Y)
         self.canvas.create_image(X/2,Y/2,image=self.image) #on affiche notre image sur le canvas
         self.canvas.update() #on update le canvas
+
+    def previousImg(self):
+        global index
+        index = index - 1
+        try :
+            self.filename = './cache/' + str(index)+'.png'
+            self.initImg('./cache/' + str(index)+'.png')
+        except TclError:
+            index = index + 1
+
+
+    def nexImg(self):
+        global index
         index = index + 1
+        try :
+            self.filename = './cache/' + str(index)+'.png'
+            self.initImg('./cache/' + str(index)+'.png')
+        except TclError:
+            index = index - 1
     
     def black_and_white(self):
         global index
+        index = index +1
         black_and_white(self.filename,'./cache/' + str(index) +'.png')
         self.initImg('./cache/' + str(index)+'.png')
 
     def contrast(self):
         global index
+        index = index +1
         contrastFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entryContrast.get()))) #on viens directement chercher la valeur de l'entrée ici
         self.initImg('./cache/' + str(index)+'.png')
 
     def sharpness(self):
         global index
+        index = index +1
         sharpnessFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entrySharpness.get()))) #on viens directement chercher la valeur de l'entrée ici
         self.initImg('./cache/' + str(index)+'.png')
 
     def saturation(self):
         global index
+        index = index +1
         saturationFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entrySaturation.get()))) #on viens directement chercher la valeur de l'entrée ici
         self.initImg('./cache/' + str(index)+'.png')
 
     def redimension(self):
         global index
+        index = index +1
         sizeFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entryRedimensionX.get())),int(verifyNumber(entryRedimensionY.get()))) #on viens directement chercher la valeur de l'entrée ici
         self.initImg('./cache/' + str(index)+'.png')
 
     def rotation(self):
         global index
+        index = index +1
         rotate(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entryRotation.get()))) #on viens directement chercher la valeur de l'entrée ici
         self.initImg('./cache/' + str(index)+'.png')
         
