@@ -25,4 +25,4 @@ class Preset :
         saturationFunction(abs_file_path,abs_file_path,self.saturation)
         rotate(abs_file_path,abs_file_path,self.rotation)
         if self.redimension[0] != "" and self.redimension[1] != "" :
-            sizeFunction(abs_file_path,abs_file_path,self.redimension[0],self.redimension[1])
+            sizeFunction(abs_file_path,abs_file_path,int(self.redimension[0]),int(self.redimension[1]))

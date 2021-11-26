@@ -24,16 +24,20 @@ mainUI.geometry("1500x800")
 index = 0
 blackAndWhite = None
 folderChange = None
+PresetDict = {}
 #on efface le cache de la session precedente
 files = glob.glob('./cache/*') #selectionne tout les fichiers dans le cache
 for f in files : 
     os.remove(f) #efface les fichiers 1 par 1
 
 #///////////   Load presets data    /////////// 
-
-jsonPresetFile = open('data/presets.json')
-PresetDict = json.load(jsonPresetFile)
+def loadPresets():
+    global PresetDict
+    jsonPresetFile = open('data/presets.json')
+    PresetDict = json.load(jsonPresetFile)
+loadPresets()
 def getPresetKey():
+    global PresetDict
     list = []
     for key in PresetDict.keys():
         list.append(key)
@@ -148,13 +152,19 @@ def savePreset():
     if entryPresetName.get() not in PresetDict and entryPresetName.get() != "" :
         i=0
         for key in temporaryDict.keys():
-             if temporaryDict[key] == "":
+            if key == "rotation" : 
+                if temporaryDict[key] == "":
                  temporaryDict[key] = 0
+            else:
+                if temporaryDict[key] == "":
+                    temporaryDict[key] = 1
         PresetDict[entryPresetName.get()] = json.dumps(temporaryDict)
     else :
         messagebox.showerror("Erreur","Un preset avec ce nom existe déja")
     with open('data/presets.json', 'w',encoding='utf-8') as outfile:
         json.dump(PresetDict, outfile)
+    entryPresetName.delete(0,END)
+    #ajouter restart script
 
 def applyPresetToFolder ():
     folder = filedialog.askdirectory()
