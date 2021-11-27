@@ -54,77 +54,92 @@ subMenuFile.add_command(label='Importer', command=lambda : (display.initImg(sele
 subMenuFile.add_command(label='Exporter')
 menuBar.add_cascade(label='Aide', menu=subMenuHelp)
 
-mainUI.columnconfigure(0, weight="1")#configuration des colonnes et lignes de la fenêtre principale
+mainUI.columnconfigure(0)#configuration des colonnes et lignes de la fenêtre principale
 mainUI.columnconfigure(1, weight="6")
-mainUI.columnconfigure(2, weight="3")
+mainUI.columnconfigure(2)
 mainUI.rowconfigure(0, weight="1")
 mainUI.rowconfigure(1 , weight="1")
+mainUI.rowconfigure(2 , weight="1")
+mainUI.rowconfigure(3 , weight="1")
+mainUI.rowconfigure(4 , weight="1")
+mainUI.rowconfigure(5 , weight="1")
+mainUI.rowconfigure(6 , weight="1")
+mainUI.rowconfigure(7 , weight="1")
+mainUI.rowconfigure(8 , weight="1")
+mainUI.rowconfigure(9 , weight="1")
+mainUI.rowconfigure(10 , weight="1")
+mainUI.rowconfigure(11, weight="1")
+mainUI.rowconfigure(12 , weight="1")
+mainUI.rowconfigure(13 , weight="1")
+mainUI.rowconfigure(14 , weight="1")
 
-toolbar = Frame(mainUI, background="green") #configuration de la barre d'outils
+toolbar = Frame(mainUI, background='#838383') #configuration de la barre d'outils
 toolbar.grid(rowspan=2,row=0,column=0,sticky="nsew")
-button1 = Button(toolbar, text="black & white", command=lambda : (display.black_and_white()))
-button1.pack()
+button1 = Button(toolbar, text="Black & White", command=lambda : (display.black_and_white()))
+button1.grid(rowspan=1,padx=50,pady=20,row=2,column=0)
 
 nextAndPrev = Frame(toolbar)
-nextAndPrev.pack()
-buttonPrev = Button(nextAndPrev, text="<--", command=lambda :(display.previousImg()))
+nextAndPrev.grid(rowspan=1,padx=50,pady=20,row=0,column=0)
+buttonPrev = Button(nextAndPrev,text="<--", command=lambda :(display.previousImg()))
 buttonNext = Button(nextAndPrev, text="-->", command=lambda: (display.nexImg()))
-buttonPrev.pack()
-buttonNext.pack()
+buttonPrev.grid(rowspan=1,row=0,column=0)
+buttonNext.grid(rowspan=1,row=0,column=1)
 
 contrast = Frame(toolbar) #crée un frame pour l'input en question
-contrast.pack()
+contrast.grid(rowspan=1,padx=50,pady=20,row=3,column=0)
 button2 = Button(contrast, text='contrast',command=lambda : (display.contrast()))
-button2.pack()
+button2.grid(rowspan=1,row=4,column=0)
 entryContrast = Entry(contrast)
-entryContrast.pack()
+entryContrast.grid(rowspan=1,row=5,column=0)
 
 sharpness = Frame(toolbar) #crée un frame pour l'input en question
-sharpness.pack()
+sharpness.grid(rowspan=1,padx=50,pady=20,row=6,column=0)
 button3 = Button(sharpness, text='duretée',command=lambda : (display.sharpness()))
-button3.pack()
+button3.grid(rowspan=1,row=7,column=0)
 entrySharpness = Entry(sharpness)
-entrySharpness.pack()
+entrySharpness.grid(rowspan=1,row=8,column=0)
 
 saturation = Frame(toolbar) #crée un frame pour l'input en question
-saturation.pack()
+saturation.grid(rowspan=1,padx=50,pady=20,row=9,column=0)
 button4 = Button(saturation, text='saturation',command=lambda : (display.saturation()))
-button4.pack()
+button4.grid(rowspan=1,row=10,column=0)
 entrySaturation = Entry(saturation)
-entrySaturation.pack()
+entrySaturation.grid(rowspan=1,row=11,column=0)
 
 redimensionner = Frame(toolbar) #crée un frame pour l'input en question
-redimensionner.pack()
+redimensionner.grid(rowspan=1,padx=50,pady=20,row=12,column=0)
 button5 = Button(redimensionner, text='redimmensionner',command=lambda : (display.redimension()))
-button5.pack()
+button5.grid(rowspan=1,row=3,column=0)
 entryRedimensionX = Entry(redimensionner)
-entryRedimensionX.pack()
+entryRedimensionX.grid(rowspan=1,row=13,column=0)
 entryRedimensionY = Entry(redimensionner)
-entryRedimensionY.pack()
+entryRedimensionY.grid(rowspan=1,row=14,column=0)
 
 rotation = Frame(toolbar) #crée un frame pour l'input en question
-rotation.pack()
+rotation.grid(rowspan=1,padx=50,pady=20,row=15,column=0)
 button6 = Button(rotation, text='Rotation',command=lambda : (display.rotation()))
-button6.pack()
+button6.grid(rowspan=1,row=16,column=0)
 entryRotation = Entry(rotation)
-entryRotation.pack()
+entryRotation.grid(rowspan=1,row=17,column=0)
 
-visualization = Frame(mainUI, background="blue") #configuration du frame de canvas principal
-visualization.grid(rowspan=2,row=0,column=1,sticky="nsew")
+visualization = Frame(mainUI, background="#404040") #configuration du frame de canvas principal
+visualization.grid(rowspan=1,row=0,column=1)
 
-presetPanel = Frame(mainUI, background="yellow")#configuration du Frame controlPanel
-presetPanel.grid(rowspan=2,row=0,column=2,sticky="nsew")
+presetPanel = Frame(mainUI, background="#838383")#configuration du Frame controlPanel
+presetPanel.grid(rowspan=1,row=0,column=2,ipady=500,sticky="nsew")
 
 savePresetButton = Button(presetPanel, text="Sauvegarder ce preset", command=lambda : (savePreset()))
 entryPresetName = Entry(presetPanel)
-savePresetButton.pack()
-entryPresetName.pack()
+savePresetButton.grid(rowspan=1,padx=50,pady=2,row=2,column=2,sticky="nsew")
+entryPresetName.grid(rowspan=1,padx=50,pady=10,row=1,column=2,sticky="nsew")
+
 
 presetList = ttk.Combobox(presetPanel, values=getPresetKey())
-presetList.pack()
+presetList.grid(rowspan=1,padx=50,pady=30,row=3,column=2,sticky="nsew")
+
 
 browseFolderButton = Button(presetPanel, text="apply to a folder", command=lambda : (applyPresetToFolder()))
-browseFolderButton.pack()
+browseFolderButton.grid(rowspan=1,padx=50,pady=2,row=4,column=2)
 
 #////////////////////// Definition des fonctions personalisées ///////////////////////////
 
