@@ -30,7 +30,10 @@ PresetDict = {}             #dictionnaire dans lequel nous allons charger les pr
 #on efface le cache de la session precedente
 
 #le cache permet de sauvegarder temporairement les fichier afin de pouvoir faire un avant/aprés
-os.makedirs(os.path.dirname(__file__) +"/cache", exist_ok=False) #crée un dossier cache si il n'existe pas
+try:
+    os.makedirs(os.path.dirname(__file__) +"/cache") #crée un dossier cache si il n'existe pas
+except FileExistsError:
+    pass
 files = glob.glob('./cache/*') #selectionne tout les fichiers dans le cache
 for f in files : 
     os.remove(f)               #efface les fichiers 1 par 1
