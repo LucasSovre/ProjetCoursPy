@@ -3,12 +3,14 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 from tkinter import filedialog
-from os import remove
+from tkinter import filedialog
 
+from os import remove
+from shutil import copyfile
 import glob 
 import json
-
 from PIL import Image
+
 from modules.importation import *
 from modules.b_and_w import *
 from modules.redimensionner import sizeFunction
@@ -17,31 +19,35 @@ from modules.preset import Preset
 
 #////////////////////////       Préparation du logiciel         ///////////////////////////////////
 
-mainUI = Tk() #on instentie la fenetre principale du programme
-mainUI.title('main') #renomme la fenetre principale
-mainUI.geometry("1500x800")
+mainUI = Tk()               #on instentie la fenetre principale du programme
+mainUI.title('main')        #renomme la fenetre principale
+mainUI.geometry("1500x800") #on donne la taille de la fenêtre initiale 
 
-index = 0
-blackAndWhite = None
-folderChange = None
-PresetDict = {}
+index = 0                   #l'index servira a conaitre l'image actuelle dans le cache
+blackAndWhite = None        #voir fonction de sauvegarde preset   
+PresetDict = {}             #dictionnaire dans lequel nous allons charger les presets
+
 #on efface le cache de la session precedente
 files = glob.glob('./cache/*') #selectionne tout les fichiers dans le cache
 for f in files : 
-    os.remove(f) #efface les fichiers 1 par 1
+    os.remove(f)               #efface les fichiers 1 par 1
 
 #///////////   Load presets data    /////////// 
 def loadPresets():
-    global PresetDict
-    jsonPresetFile = open('data/presets.json')
-    PresetDict = json.load(jsonPresetFile)
+    global PresetDict                               #utilisation de global pour avoir accés à la variable PresetDict
+    jsonPresetFile = open('data/presets.json')      #ouverture de preset sous format json
+    PresetDict = json.load(jsonPresetFile)          #on convertis json en dictionnaire
 loadPresets()
-def getPresetKey():
+def getPresetKey():                                 #on récupère les keys des presets pour les afficher dans le choix de presets
     global PresetDict
     list = []
     for key in PresetDict.keys():
         list.append(key)
     return list
+
+def export ():                                      #fonction pour sauvegarder l'image
+    copyfile('cache/'+str(index)+".png", filedialog.asksaveasfile(mode='w', defaultextension=".png").name)
+
 
 #//////////////////////    Definition des widgets de la fenêtre   ////////////////////////////////
 
@@ -51,7 +57,7 @@ subMenuFile = Menu(menuBar) #on défini le sous menu
 subMenuHelp = Menu(menuBar)
 menuBar.add_cascade(label='Fichier', menu=subMenuFile)
 subMenuFile.add_command(label='Importer', command=lambda : (display.initImg(select_files(str(index)))))
-subMenuFile.add_command(label='Exporter')
+subMenuFile.add_command(label='Exporter', command= lambda : export())
 menuBar.add_cascade(label='Aide', menu=subMenuHelp)
 
 mainUI.columnconfigure(0)#configuration des colonnes et lignes de la fenêtre principale
@@ -78,7 +84,7 @@ toolbar.grid(rowspan=2,row=0,column=0,sticky="nsew")
 button1 = Button(toolbar, text="Black & White", command=lambda : (display.black_and_white()))
 button1.grid(rowspan=1,padx=50,pady=20,row=2,column=0)
 
-nextAndPrev = Frame(toolbar)
+nextAndPrev = Frame(toolbar)  #création de l'UI pour "avant", "aprés" 
 nextAndPrev.grid(rowspan=1,padx=50,pady=20,row=0,column=0)
 buttonPrev = Button(nextAndPrev,text="<--", command=lambda :(display.previousImg()))
 buttonNext = Button(nextAndPrev, text="-->", command=lambda: (display.nexImg()))
@@ -143,50 +149,53 @@ browseFolderButton.grid(rowspan=1,padx=50,pady=2,row=4,column=2)
 
 #////////////////////// Definition des fonctions personalisées ///////////////////////////
 
-def verifyNumber(entry):
+def verifyNumber(entry): #cette fonction verifie que son entrées est un nombre
     if entry.isdigit():
         return entry
-    else :
+    else :               #si non affiche une erreur
         messagebox.showerror("Erreur","L'entrée est incorecte, veuillez entrer un nombre entier svp")
 
-def savePreset():
-    temporaryDict ={
+def savePreset():       #Permet de sauvegarder les modifs actuelles comme un preset
+    temporaryDict ={                                                                   #récupère les réglages de modification
         "contrast" : entryContrast.get(),
         "sharpness" : entrySharpness.get(),
         "saturation" : entrySaturation.get(),
         "dimensions" : [entryRedimensionX.get(),entryRedimensionY.get()],
         "rotation" : entryRotation.get()
-    }
-    if blackAndWhite != None:
-        if blackAndWhite <= index:
+    }   
+    if blackAndWhite != None:                                                           #comme black&white est un bouton on ne peut pas récuperer sa valeur, on utilise l'index de l'image à laquelle le b&w à été utilisé
+        if blackAndWhite <= index:                                                      #en, vérifiant si b&w est inferieur ou égal à l'index actuel, on peut prendre en compte des retours en arrière de l'utilisateur
             temporaryDict["blackAndWhite"] = True
         else :
             temporaryDict["blackAndWhite"] = False
     else :
         temporaryDict["blackAndWhite"] = False
-    if entryPresetName.get() not in PresetDict and entryPresetName.get() != "" :
+    if entryPresetName.get() not in PresetDict and entryPresetName.get() != "" :        #on verifie si le nom existe deja dans les presets
         i=0
         for key in temporaryDict.keys():
-            if key == "rotation" : 
-                if temporaryDict[key] == "":
-                 temporaryDict[key] = 0
+            if key == "rotation" :                                                      
+                if temporaryDict[key] == "":                                            #si une valeur entrée est nulle:
+                 temporaryDict[key] = 0                                                 #si c'est rotation on lui affecte 0 car on veut pas tourner l'image
             else:
-                if temporaryDict[key] == "":
-                    temporaryDict[key] = 1
+                if temporaryDict[key] == "":                                            
+                    temporaryDict[key] = 1                                              #sinon on lui affecte 1, (les mofifications sont multiplicatives, ainsi 1, ne changera pas l'aspect final)
         PresetDict[entryPresetName.get()] = json.dumps(temporaryDict)
     else :
-        messagebox.showerror("Erreur","Un preset avec ce nom existe déja")
-    with open('data/presets.json', 'w',encoding='utf-8') as outfile:
+        messagebox.showerror("Erreur","Un preset avec ce nom existe déja")              #si un preset de ce nom existe déja on affiche une érreur
+    with open('data/presets.json', 'w',encoding='utf-8') as outfile:                    #on écrit le nouveau preset dans le fichier
         json.dump(PresetDict, outfile)
-    entryPresetName.delete(0,END)
-    #ajouter restart script
+    entryPresetName.delete(0,END)                                                       #on reset l'entrée de nom du preset
+    loadPresets()                                                                       #on re-charge les presets 
+    presetList = ttk.Combobox(presetPanel, values=getPresetKey())                       #une reconfiguration du widget permet de mettre à jour sa liste en prenant en compte le nouveau preset
+    presetList.grid(rowspan=1,padx=50,pady=30,row=3,column=2,sticky="nsew")
 
-def applyPresetToFolder ():
-    folder = filedialog.askdirectory()
-    files = glob.glob(folder+"/*.png")
-    selectedPreset = json.loads(PresetDict[presetList.get()])
+def applyPresetToFolder ():                                                             #fonction pour appliquer un preset à tout un dossier
+    folder = filedialog.askdirectory()                                                  #on demande le dossier contenant les images à modifier
+    files = glob.glob(folder+"/*.png")                                                  #permet de selectioner toutes les images png
+    selectedPreset = json.loads(PresetDict[presetList.get()])                           #on charge le preset selcetionné dans la liste déroulante
+    #on crée un objet de la classe preset
     preset = Preset(selectedPreset["blackAndWhite"],selectedPreset["contrast"],selectedPreset["sharpness"],selectedPreset["saturation"],selectedPreset["dimensions"],selectedPreset["rotation"])
-    for file in files :
+    for file in files :                                                                 #on applique le preset à tout les fichiers png selectionnés plus tot
         preset.apply(file)
         
 
@@ -194,31 +203,31 @@ def applyPresetToFolder ():
 #//////////////////////    Definition de la classe principal permettant l'affichage //////////////////
 
 class Displayed : 
-    def __init__(self,parentFrame) :
+    def __init__(self,parentFrame) :                                #constructeur de la classe
         self.parentFrame = parentFrame
-        self.canvas = Canvas(self.parentFrame,width=0,height=0)
+        self.canvas = Canvas(self.parentFrame,width=0,height=0)     #on initie le canva en 0x0 pour ne pas être vue par l'utilisateur 
         self.canvas.pack()
 
-    def initImg(self,filename):
+    def initImg(self,filename):                                     #initiation de l'image
         global index
         self.filename = filename
         self.image = PhotoImage(file=filename)
         pic = Image.open(filename)
-        X,Y = pic.size
+        X,Y = pic.size                                              #on récupère ses dimensions
         self.canvas.config(width=X,height=Y)
-        self.canvas.create_image(X/2,Y/2,image=self.image) #on affiche notre image sur le canvas
-        self.canvas.update() #on update le canvas
+        self.canvas.create_image(X/2,Y/2,image=self.image)          #on affiche notre image sur le canvas
+        self.canvas.update()                                        #on update le canvas
 
     def previousImg(self):
         global index
-        index = index - 1
+        index = index - 1                                           #on recule l'index de 1
         try :
             self.filename = './cache/' + str(index)+'.png'
             self.initImg('./cache/' + str(index)+'.png')
-        except TclError:
+        except TclError:                                            #permet de gerer l'erreur d'un utilisateur qui reviendrais trop en arrière (i<0)
             index = index + 1
 
-    def nexImg(self):
+    def nexImg(self):                                               #raisonement analogue à previousIMG mais pour la suivante
         global index
         index = index + 1
         try :
@@ -227,7 +236,7 @@ class Displayed :
         except TclError:
             index = index - 1
     
-    def black_and_white(self):
+    def black_and_white(self):                                      #appel la fonction de modification Black&White
         global index
         global blackAndWhite
         index = index +1
@@ -235,31 +244,31 @@ class Displayed :
         black_and_white(self.filename,'./cache/' + str(index) +'.png')
         self.initImg('./cache/' + str(index)+'.png')
 
-    def contrast(self):
+    def contrast(self):                                              #appel la fonction de modification contrast
         global index
         index = index +1
         contrastFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entryContrast.get()))) #on viens directement chercher la valeur de l'entrée ici
         self.initImg('./cache/' + str(index)+'.png')
 
-    def sharpness(self):
+    def sharpness(self):                                              #appel la fonction de modification sharpness (duretée)
         global index
         index = index +1
         sharpnessFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entrySharpness.get()))) #on viens directement chercher la valeur de l'entrée ici
         self.initImg('./cache/' + str(index)+'.png')
 
-    def saturation(self):
+    def saturation(self):                                              #appel la fonction de modification saturation
         global index
         index = index +1
         saturationFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entrySaturation.get()))) #on viens directement chercher la valeur de l'entrée ici
         self.initImg('./cache/' + str(index)+'.png')
 
-    def redimension(self):
+    def redimension(self):                                             #appel la fonction de modification redimensionnement
         global index
         index = index +1
         sizeFunction(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entryRedimensionX.get())),int(verifyNumber(entryRedimensionY.get()))) #on viens directement chercher la valeur de l'entrée ici
         self.initImg('./cache/' + str(index)+'.png')
 
-    def rotation(self):
+    def rotation(self):                                                #appel la fonction de modification rotation
         global index
         index = index +1
         rotate(self.filename,'./cache/' + str(index) +'.png',int(verifyNumber(entryRotation.get()))) #on viens directement chercher la valeur de l'entrée ici
@@ -267,6 +276,6 @@ class Displayed :
         
 #///////////////// on instentie la classe permettant l'affichage du canvas /////////////////////////////
 
-display = Displayed(visualization)
+display = Displayed(visualization) #on instensie le canvas
 
 mainUI.mainloop() #on lance l'attente de commande et de L'UI

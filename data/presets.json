@@ -1,1 +1,1 @@
-{}
+{"test1": "{\"contrast\": \"4\", \"sharpness\": 1, \"saturation\": 1, \"dimensions\": [\"\", \"\"], \"rotation\": 0, \"blackAndWhite\": true}", "test2": "{\"contrast\": 1, \"sharpness\": 1, \"saturation\": 1, \"dimensions\": [\"\", \"\"], \"rotation\": 0, \"blackAndWhite\": true}", "tetst3": "{\"contrast\": \"2\", \"sharpness\": \"2\", \"saturation\": 1, \"dimensions\": [\"\", \"\"], \"rotation\": 0, \"blackAndWhite\": false}", "test4": "{\"contrast\": 1, \"sharpness\": 1, \"saturation\": 1, \"dimensions\": [\"\", \"\"], \"rotation\": 0, \"blackAndWhite\": false}"}
