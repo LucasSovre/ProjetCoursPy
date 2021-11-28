@@ -23,11 +23,12 @@ mainUI = Tk()               #on instentie la fenetre principale du programme
 mainUI.title('main')        #renomme la fenetre principale
 mainUI.geometry("1500x800") #on donne la taille de la fenêtre initiale 
 
-index = 0                   #l'index servira a conaitre l'image actuelle dans le cache
+index = 0                   #l'index servira a conaitre l'image dans le cache à afficher et à utiliser actuellement 
 blackAndWhite = None        #voir fonction de sauvegarde preset   
 PresetDict = {}             #dictionnaire dans lequel nous allons charger les presets
 
 #on efface le cache de la session precedente
+#le cache permet de sauvegarder temporairement les fichier afin de pouvoir faire un avant/aprés
 files = glob.glob('./cache/*') #selectionne tout les fichiers dans le cache
 for f in files : 
     os.remove(f)               #efface les fichiers 1 par 1
