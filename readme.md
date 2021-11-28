@@ -2,6 +2,10 @@
 
 Ce fichier résume la construction du projet, ses tenants et aboutissants.
 
+## démo
+
+![](demo.gif)
+
 
 ## Authors
 
