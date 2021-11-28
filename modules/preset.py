@@ -17,7 +17,7 @@ class Preset :
         self.rotation = rotation
     
     def apply (self,abs_file_path):
-        if(self.black_and_white == True): #le filtre noir est blanc dois dabord être appliqué seul
+        if(self.black_and_white == True):                                     #le filtre noir est blanc dois dabord être appliqué seul
             black_and_white(abs_file_path,abs_file_path)
         #puis nous appliquons toutes les fonctions de manière récursives à l'image choisie
         contrastFunction(abs_file_path,abs_file_path,self.contrast)
