@@ -19,6 +19,7 @@ Ce fichier résume la construction du projet, ses tenants et aboutissants.
 - Sauvegarder des transformations d'images de manière à faire "un filtre"
 - Appliquer "un filtre" à toutes les images .png d'un fichier
 
+Attention ! ce projet python dois être executé sur des images ".png" pour fonctionner correctement.
 
 ## Environment Variables
 
