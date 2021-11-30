@@ -12,12 +12,14 @@ Ce fichier résume la construction du projet, ses tenants et aboutissants.
 - [@LucasSovre](https://github.com/LucasSovre) (Lucas Sovre)
 - [@HenriqueMARTINS9](https://github.com/HenriqueMARTINS9)  (Henrique Martins)
 - [@KeroSong](https://github.com/KeroSong)  (Henrique Dong)
+- 
 ## Features
 
 - Transformer une image couleur une image en noir et blanc
 - Changer différentes variables d'une image
 - Sauvegarder des transformations d'images de manière à faire "un filtre"
 - Appliquer "un filtre" à toutes les images .png d'un fichier
+- Utiliser un des filtres déja inclus
 
 Attention ! ce projet python dois être executé sur des images ".png" pour fonctionner correctement.
 
